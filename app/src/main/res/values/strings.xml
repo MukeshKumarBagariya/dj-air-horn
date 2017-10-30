@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DJ Air Horn</string>
+    <string name="bt_max_volume">max volume</string>
 </resources>
