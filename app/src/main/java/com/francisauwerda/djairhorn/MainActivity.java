@@ -11,23 +11,33 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
     private SoundPool soundPool;
     private int soundID;
     boolean loaded = false;
     private Button mButtonMaxVolume;
-    private ImageView mIv1;
-    private Button mSirenButton;
+    private ImageView mIvBackground;
+    private ImageView mIvTrump;
+    private RelativeLayout mRlTop;
+    private RelativeLayout mRlMiddle;
+    private RelativeLayout mRlBottom;
+    private RelativeLayout mRlTrump;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mIv1 = (ImageView) findViewById(R.id.iv_1);
-        mSirenButton = (Button) findViewById(R.id.siren_button);
+        mIvBackground = (ImageView) findViewById(R.id.iv_background);
+        mIvTrump = (ImageView) findViewById(R.id.iv_trump);
         mButtonMaxVolume = (Button) findViewById(R.id.bt_max_volume);
+        mRlTop = (RelativeLayout) findViewById(R.id.rl_top);
+        mRlMiddle = (RelativeLayout) findViewById(R.id.rl_middle);
+        mRlBottom = (RelativeLayout) findViewById(R.id.rl_bottom);
+        mRlTrump = (RelativeLayout) findViewById(R.id.rl_trump);
+
         setUpMaxVolumeButton();
 
         View view = findViewById(R.id.siren_button);
@@ -37,6 +47,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         buildSoundPool();
     }
 
+    /**
+     * Creates a SoundPool object with the dj air horn sound file.
+     */
     private void buildSoundPool() {
         if (soundPool == null) {
             soundPool = new SoundPool.Builder().build();
@@ -48,11 +61,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             });
             soundID = soundPool.load(this, R.raw.dj_air_horn_multiple, 1);
         }
-    }
-
-    private void destroySoundPool() {
-        soundPool.release();
-        soundPool = null;
     }
 
     @Override
@@ -67,6 +75,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             if (loaded) {
                 soundPool.play(soundID, volume, volume, 1, 0, 1f);
                 Log.v("Sound", "Sound played");
+                hideEverything();
                 flickTheLights();
             }
 
@@ -74,39 +83,23 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         return false;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        destroySoundPool();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        buildSoundPool();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        buildSoundPool();
-    }
-
     private void flickTheLights() {
-        mSirenButton.setVisibility(View.GONE);
-        mButtonMaxVolume.setVisibility(View.GONE);
-        mIv1.setVisibility(View.VISIBLE);
-
         // Create the animation that flickers.
-        Animation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(50); //You can manage the time of the blink with this parameter
-        anim.setStartOffset(20);
-        anim.setRepeatMode(Animation.REVERSE);
-        anim.setRepeatCount(30);
+        Animation anim1 = new AlphaAnimation(0.0f, 1.0f);
+        anim1.setDuration(50); //You can manage the time of the blink with this parameter
+        anim1.setStartOffset(20);
+        anim1.setRepeatMode(Animation.REVERSE);
+        anim1.setRepeatCount(30);
 
-        mIv1.startAnimation(anim);
+        Animation anim2 = new AlphaAnimation(0.0f, 1.0f);
+        anim2.setDuration(50); //You can manage the time of the blink with this parameter
+        anim2.setRepeatMode(Animation.REVERSE);
+        anim2.setRepeatCount(30);
 
-        anim.setAnimationListener(new Animation.AnimationListener() {
+        mIvBackground.startAnimation(anim1);
+        mIvTrump.startAnimation(anim2);
+
+        anim1.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -114,9 +107,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mSirenButton.setVisibility(View.VISIBLE);
-                mButtonMaxVolume.setVisibility(View.VISIBLE);
-                mIv1.setVisibility(View.GONE);
+                showEverything();
             }
 
             @Override
@@ -124,6 +115,28 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
             }
         });
+    }
+
+    /**
+     * When the trump button is clicked this function will hide everything on the screen and
+     * then show the flashing colours and images.
+     */
+    private void hideEverything() {
+        mRlTop.setVisibility(View.GONE);
+        mRlMiddle.setVisibility(View.GONE);
+        mRlBottom.setVisibility(View.GONE);
+        mRlTrump.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * After the flashing colours and images animation has ended then we want to hide their objects
+     * and show our original buttons.
+     */
+    private void showEverything() {
+        mRlTop.setVisibility(View.VISIBLE);
+        mRlMiddle.setVisibility(View.VISIBLE);
+        mRlBottom.setVisibility(View.VISIBLE);
+        mRlTrump.setVisibility(View.GONE);
     }
 
     /**
@@ -148,5 +161,23 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        soundPool.release();
+        soundPool = null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        buildSoundPool();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        buildSoundPool();
+    }
 
 }
