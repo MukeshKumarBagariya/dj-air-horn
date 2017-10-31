@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private RelativeLayout mRlMiddle;
     private RelativeLayout mRlBottom;
     private RelativeLayout mRlTrump;
+    private ViewPager mViewPager;
+    private AndroidImageAdapter mAndroidImageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         buildSoundPool();
+
+        mViewPager = (ViewPager) findViewById(R.id.vp_viewPager);
+        mAndroidImageAdapter = new AndroidImageAdapter(this);
+        mViewPager.setAdapter(mAndroidImageAdapter);
     }
 
     /**
@@ -75,6 +82,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             if (loaded) {
                 soundPool.play(soundID, volume, volume, 1, 0, 1f);
                 Log.v("Sound", "Sound played");
+
+                int currentImageId = mViewPager.getCurrentItem();
+                mIvTrump.setImageResource(mAndroidImageAdapter.getImageId(currentImageId));
+
                 hideEverything();
                 flickTheLights();
             }
