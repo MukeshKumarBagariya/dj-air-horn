@@ -13,7 +13,9 @@ public class AndroidImageAdapter extends PagerAdapter {
 
     Context mContext;
 
-    AndroidImageAdapter(Context context) {
+    public AndroidImageAdapter() {}
+
+    public AndroidImageAdapter(Context context) {
         this.mContext = context;
     }
 
