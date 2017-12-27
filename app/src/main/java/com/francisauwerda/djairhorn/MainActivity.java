@@ -1,6 +1,7 @@
 package com.francisauwerda.djairhorn;
 
 import android.app.Activity;
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -13,11 +14,12 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
     private SoundPool soundPool;
     private int soundID;
-    boolean loaded = false;
+    private boolean loaded = false;
     private Button mButtonMaxVolume;
     private ImageView mIvBackground;
     private ImageView mIvTrump;
@@ -27,6 +29,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private RelativeLayout mRlTrump;
     private ViewPager mViewPager;
     private AndroidImageAdapter mAndroidImageAdapter;
+    private SeekBar mSbVolumeControl;
+    private AudioManager mAudioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +45,18 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         mRlBottom = (RelativeLayout) findViewById(R.id.rl_bottom);
         mRlTrump = (RelativeLayout) findViewById(R.id.rl_trump);
 
+        // Un-comment these two lines for volume control.
+        // mSbVolumeControl = (SeekBar) findViewById(R.id.sb_volume_control);
+        // setUpVolumeControl();
+
+        // I need to set up listener's to initially set the seek bar to whatever the volume is.
+
+        // I need to set up listener's to adjust the seekbar to whatever the hard buttons change it to.
+
         setUpMaxVolumeButton();
 
         View view = findViewById(R.id.siren_button);
         view.setOnTouchListener(this);
-        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         buildSoundPool();
 
@@ -55,9 +66,34 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     /**
+     * Sets the devices volume to MAX.
+     */
+    public void setMaxVolume() {
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+        audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+        Log.v("Volume", "Volume has been set to MAX");
+    }
+
+    /**
+     * Prepare the max volume button's on click listener.
+     */
+    private void setUpMaxVolumeButton() {
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        mButtonMaxVolume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setMaxVolume();
+            }
+        });
+    }
+
+
+    /**
      * Creates a SoundPool object with the dj air horn sound file.
      */
     private void buildSoundPool() {
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         if (soundPool == null) {
             soundPool = new SoundPool.Builder().build();
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
@@ -151,23 +187,28 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     /**
-     * Sets the devices volume to MAX.
+     * Listener for the volume control seek bar.
      */
-    public void setMaxVolume() {
-        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-        Log.v("Volume", "Volume has been set to MAX");
-    }
-
-    /**
-     * Sets up the max volume button.
-     */
-    private void setUpMaxVolumeButton() {
-        mButtonMaxVolume.setOnClickListener(new View.OnClickListener() {
+    private void setUpVolumeControl() {
+        // Ensure the volume controls the correct stream, i.e not the notifications.
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int curVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        mSbVolumeControl.setMax(maxVolume);
+        mSbVolumeControl.setProgress(curVolume);
+        mSbVolumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onClick(View view) {
-                setMaxVolume();
+            public void onStopTrackingTouch(SeekBar arg0) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, arg1, 0);
             }
         });
     }

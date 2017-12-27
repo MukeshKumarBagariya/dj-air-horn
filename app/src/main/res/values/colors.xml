@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorStatusBar">#FFFFFF</color>
+    <color name="colorButtonSeeThrough">#66FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlue">#2962ff</color>
+    <color name="colorFlashing">@color/colorBlue</color>
 </resources>

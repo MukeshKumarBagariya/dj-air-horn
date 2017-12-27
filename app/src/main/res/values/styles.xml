@@ -5,9 +5,13 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorStatusBar</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowFullscreen">false</item>
+        <item name="colorAccent">@color/colorButtonSeeThrough</item>
         <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorButtonNormal">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorBlack</item>
     </style>
 
 </resources>
