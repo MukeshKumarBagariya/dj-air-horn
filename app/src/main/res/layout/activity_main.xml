@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.francisauwerda.djairhorn.MainActivity"
-    android:orientation="vertical"
+    android:background="@drawable/background_gradient"
     android:gravity="center_vertical"
-    android:background="@drawable/background_gradient">
+    android:orientation="vertical"
+    tools:context="com.francisauwerda.djairhorn.MainActivity">
 
 
     <RelativeLayout
@@ -42,8 +42,7 @@
             android:background="@drawable/round_button"
             android:cropToPadding="false"
             android:elevation="8dp"
-            android:scaleType="centerCrop"
-            />
+            android:scaleType="centerCrop" />
 
         <ImageView
             android:layout_width="120dp"
@@ -63,38 +62,38 @@
         <!--Here I will have the old MAX VOLUME button-->
         <Button
             android:id="@+id/bt_max_volume"
+            style="@style/AppTheme.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bt_max_volume"
             android:layout_centerInParent="true"
-            style="@style/AppTheme.Button"
-            android:textColor="@color/colorBlack"/>
+            android:text="@string/bt_max_volume"
+            android:textColor="@color/colorBlack" />
 
         <!--Volume control-->
         <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:paddingLeft="36dp"-->
-            <!--android:paddingRight="36dp">-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:paddingLeft="36dp"-->
+        <!--android:paddingRight="36dp">-->
 
-            <!--<ImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:src="@drawable/ic_volume_low" />-->
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/ic_volume_low" />-->
 
-            <!--<SeekBar-->
-                <!--style="@style/Widget.AppCompat.SeekBar.Discrete"-->
-                <!--android:id="@+id/sb_volume_control"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="0.90" />-->
+        <!--<SeekBar-->
+        <!--style="@style/Widget.AppCompat.SeekBar.Discrete"-->
+        <!--android:id="@+id/sb_volume_control"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="0.90" />-->
 
-            <!--<ImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:src="@drawable/ic_volume_high" />-->
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/ic_volume_high" />-->
 
         <!--</LinearLayout>-->
     </RelativeLayout>
@@ -106,12 +105,13 @@
         android:layout_height="match_parent"
         android:layout_weight="0"
         android:visibility="gone">
+
         <ImageView
             android:id="@+id/iv_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@color/colorFlashing"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:src="@color/colorFlashing" />
 
         <ImageView
             android:id="@+id/iv_trump"
